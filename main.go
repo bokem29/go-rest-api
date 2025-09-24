@@ -11,6 +11,7 @@ import (
 func setupRoutes() {
 	http.HandleFunc("/api/characters", handlers.CharacterHandler)
 	http.HandleFunc("/api/characters/", handlers.CharacterHandler)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("."))))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "index.html")
