@@ -1,0 +1,32 @@
+[
+  {
+    "id": 2,
+    "name": "Mario",
+    "role": "Main Char",
+    "game": "Super Mario"
+  },
+  {
+    "id": 4,
+    "name": "Atma",
+    "role": "Main Char",
+    "game": "A Space for The Unbound"
+  },
+  {
+    "id": 5,
+    "name": "Dante",
+    "role": "Demons",
+    "game": "Devil May Cry"
+  },
+  {
+    "id": 6,
+    "name": "Kratos",
+    "role": "Main Char",
+    "game": "God of War"
+  },
+  {
+    "id": 7,
+    "name": "Sonic ",
+    "role": "Speedster",
+    "game": "Sonic The Hedhog"
+  }
+]
