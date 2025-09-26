@@ -7,53 +7,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..800&display=swap" rel="stylesheet">
   <title>Karakter Game</title>
   <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --muted: #94a3b8;
+      --text: #e5e7eb;
+      --primary: #6366f1;
+      --primary-600: #5458ee;
+      --danger: #ef4444;
+      --radius: 12px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
     body {
       font-family: 'Manrope', sans-serif;
       margin: 0;
       padding: 20px;
-      background: #f5f6fa;
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(99,102,241,0.12), transparent 50%),
+                  radial-gradient(1200px 600px at 80% -10%, rgba(56,189,248,0.12), transparent 50%),
+                  var(--bg);
+      color: var(--text);
     }
     h1 {
       text-align: center;
-      color: #333;
+      color: #e5e7eb;
       margin-bottom: 20px;
     }
-    .btn-add {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-family: "Manrope", sans-serif;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-    }
-    .btn-add:hover {
-      background-color: #45a049;
-      transform: scale(1.05);
-    }
+    .toolbar { max-width: 1100px; margin: 0 auto 16px auto; display: flex; justify-content: space-between; align-items: center; }
+    .toolbar .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:0.3px; }
+    .brand-badge { width:26px; height:26px; border-radius:8px; background: linear-gradient(135deg, var(--primary), #38bdf8); box-shadow: var(--shadow); }
+    .btn-add { display: inline-block; padding: 10px 16px; background-color: var(--primary); color: white; border: 1px solid var(--primary); border-radius: 10px; font-family: "Manrope", sans-serif; cursor: pointer; transition: background 0.25s, transform 0.2s; }
+    .btn-add:hover { background-color: var(--primary-600); transform: translateY(-1px); }
+    .btn-ghost { display:inline-block; padding: 10px 16px; border-radius: 10px; background: rgba(148,163,184,0.08); border: 1px solid rgba(148,163,184,0.18); color: var(--text); cursor: pointer; }
+    .btn-ghost:hover { background: rgba(148,163,184,0.16); }
     form {
-      max-width: 500px;
+      max-width: 600px;
       margin: 20px auto;
-      background: white;
+      background: rgba(17,24,39,0.8);
+      border: 1px solid rgba(148,163,184,0.12);
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
     }
     input {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.25);
+      background: rgba(148,163,184,0.06);
+      color: var(--text);
       font-size: 1em;
       box-sizing: border-box;
     }
     label {
       font-weight: 600;
-      color: #555;
+      color: var(--muted);
     }
     #formButtons {
       display: flex;
@@ -63,33 +71,36 @@
     }
   
     .card-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
       padding: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
     }
     .card {
-      background: white;
+      background: rgba(17,24,39,0.8);
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(148,163,184,0.12);
       width: 220px;
       padding: 20px;
       text-align: center;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 20px 35px rgba(0,0,0,0.35);
+      border-color: rgba(99,102,241,0.35);
     }
     .card h3 {
       font-size: 1.2em;
       margin-bottom: 10px;
-      color: #333;
+      color: #e5e7eb;
     }
     .card p {
       font-size: 0.95em;
-      color: #555;
+      color: #cbd5e1;
       margin: 5px 0;
     }
     .card button {
@@ -105,28 +116,66 @@
       transform: scale(1.02);
     }
     .btn-edit {
-      background-color: #ffa500;
-      color: white;
+      background-color: rgba(245,158,11,0.2);
+      color: #fde68a;
+      border: 1px solid rgba(245,158,11,0.35);
     }
     .btn-edit:hover {
-      background-color: #e68900;
+      background-color: rgba(245,158,11,0.35);
     }
     .btn-delete {
-      background-color: #f44336;
-      color: white;
+      background-color: rgba(239,68,68,0.2);
+      color: #fecaca;
+      border: 1px solid rgba(239,68,68,0.35);
     }
     .btn-delete:hover {
-      background-color: #d32f2f;
+      background-color: rgba(239,68,68,0.35);
     }
+
+    /* Toasts */
+    .toasts { position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 10px; z-index: 60; }
+    .toast { background: rgba(17,24,39,0.9); border: 1px solid rgba(148,163,184,0.2); color: var(--text); padding: 10px 12px; border-radius: 10px; box-shadow: var(--shadow); min-width: 220px; }
+    .toast.success { border-color: rgba(34,197,94,0.35); }
+    .toast.error { border-color: rgba(239,68,68,0.35); }
+    .muted { color: var(--muted); }
+    .spinner { width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.9s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
+  <div class="toolbar">
+    <div class="brand"><div class="brand-badge"></div> <div>Karakter Game</div></div>
+    <div>
+      <button class="btn-ghost" onclick="loadCharacters()">Refresh</button>
+      <button class="btn-add" onclick="document.querySelector('form').scrollIntoView({behavior:'smooth'});">+ Tambah</button>
+    </div>
+  </div>
   <h1>Karakter Game</h1>
-  <button class="btn-add" onclick="loadCharacters()">Lihat Semua Karakter</button>
+  <div style="max-width: 500px; margin: 0 auto;">
+    <div id="authBox" style="background:rgba(17,24,39,0.8); padding:16px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.05); margin-bottom:16px;">
+      <div id="loginForm">
+        <h3 style="margin:0 0 10px 0;">Login</h3>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button class="btn-add" onclick="login()">Login</button>
+      </div>
+      <div id="loggedIn" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <div><strong>Status:</strong> <span id="statusText">Belum login</span></div>
+          <div>
+            <button class="btn-add" style="background:#1976d2" onclick="loadCharacters()">Lihat Semua Karakter</button>
+            <button class="btn-add" style="background:#9c27b0" onclick="logout()">Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div id="characterCards" class="card-container"></div>
+  <div id="listLoading" style="text-align:center; margin: 10px 0; display:none;" class="muted"><span class="spinner"></span> Memuat...</div>
+  <div id="emptyState" style="text-align:center; margin: 10px 0; display:none;" class="muted">Belum ada data</div>
 
-  <h2 style="text-align:center; color: #333;">Tambah / Edit Karakter</h2>
+  <h2 style="text-align:center; color: #fafafa;">Tambah / Edit Karakter</h2>
   <form onsubmit="saveCharacter(event)">
     <label>Nama:</label><br>
     <input type="text" id="name" required><br>
@@ -141,13 +190,110 @@
 
   <script>
     let editId = null;
+    let token = localStorage.getItem('authToken') || '';
+    let refreshToken = localStorage.getItem('refreshToken') || '';
+
+    function refreshAuthUI() {
+      const loginDiv = document.getElementById('loginForm');
+      const loggedInDiv = document.getElementById('loggedIn');
+      const statusText = document.getElementById('statusText');
+      if (token) {
+        loginDiv.style.display = 'none';
+        loggedInDiv.style.display = 'block';
+        statusText.textContent = 'Logged in';
+      } else {
+        loginDiv.style.display = 'block';
+        loggedInDiv.style.display = 'none';
+        statusText.textContent = 'Belum login';
+      }
+    }
+
+    async function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      if (!res.ok) {
+        showToast('Login gagal', 'error');
+        return;
+      }
+      const data = await res.json();
+      token = data.token;
+      refreshToken = data.refresh;
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('refreshToken', refreshToken);
+      refreshAuthUI();
+      showToast('Login berhasil', 'success');
+    }
+
+    async function logout() {
+      if (!token) return;
+      await fetch('/api/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token }});
+      token = '';
+      refreshToken = '';
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
+      refreshAuthUI();
+      document.getElementById('characterCards').innerHTML = '';
+      showToast('Berhasil logout');
+    }
+
+    async function apiFetch(url, options = {}, retry = true) {
+      if (!options.headers) options.headers = {};
+      if (token) options.headers['Authorization'] = 'Bearer ' + token;
+      const res = await fetch(url, options);
+      if (res.status === 401 && retry && refreshToken) {
+        const ok = await tryRefresh();
+        if (ok) {
+          return apiFetch(url, options, false);
+        }
+        // refresh gagal: paksa logout agar UI sinkron jika token dicabut dari terminal
+        forceLogoutUI();
+      }
+      return res;
+    }
+
+    async function tryRefresh() {
+      try {
+        const res = await fetch('/api/refresh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refresh: refreshToken })
+        });
+        if (!res.ok) return false;
+        const data = await res.json();
+        token = data.token;
+        refreshToken = data.refresh;
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('refreshToken', refreshToken);
+        refreshAuthUI();
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function forceLogoutUI() {
+      token = '';
+      refreshToken = '';
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
+      refreshAuthUI();
+    }
 
     async function loadCharacters() {
-      const res = await fetch("/api/characters");
+      if (!token) { alert('Silakan login dulu'); return; }
+      document.getElementById('listLoading').style.display = 'block';
+      const res = await apiFetch("/api/characters");
       const data = await res.json();
+      document.getElementById('listLoading').style.display = 'none';
 
       const container = document.getElementById("characterCards");
       container.innerHTML = "";
+      document.getElementById('emptyState').style.display = (!Array.isArray(data) || data.length === 0) ? 'block' : 'none';
 
       data.forEach(c => {
         const card = document.createElement("div");
@@ -171,17 +317,13 @@
       document.getElementById("name").value = name;
       document.getElementById("role").value = role;
       document.getElementById("game").value = game;
-      document.getElementById("cancelBtn").style.display = "inline-block";
+      
     }
 
-    function cancelEdit() {
-      editId = null;
-      document.querySelector("form").reset();
-      document.getElementById("cancelBtn").style.display = "none";
-    }
 
     async function saveCharacter(event) {
   event.preventDefault();
+      if (!token) { alert('Silakan login dulu'); return; }
 
   const character = {
     name: document.getElementById("name").value,
@@ -190,18 +332,20 @@
   };
 
   if (editId) {
-    await fetch(`/api/characters/${editId}`, {
+    await apiFetch(`/api/characters/${editId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(character)
     });
     editId = null;
+    showToast('Perubahan tersimpan', 'success');
   } else {
-    await fetch("/api/characters", {
+    await apiFetch("/api/characters", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(character)
     });
+    showToast('Karakter ditambahkan', 'success');
   }
 
   document.querySelector("form").reset();
@@ -212,11 +356,28 @@
 
     async function deleteCharacter(id) {
       if (confirm("Yakin mau hapus karakter ini?")) {
-        await fetch(`/api/characters/${id}`, { method: "DELETE" });
+        if (!token) { alert('Silakan login dulu'); return; }
+        await apiFetch(`/api/characters/${id}`, { method: "DELETE" });
         loadCharacters();
+        showToast('Karakter dihapus', 'success');
       }
     }
 
+    function showToast(msg, type = 'success') {
+      const box = document.getElementById('toasts');
+      if (!box) {
+        const div = document.createElement('div');
+        div.id = 'toasts';
+        div.className = 'toasts';
+        document.body.appendChild(div);
+      }
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.textContent = msg;
+      document.getElementById('toasts').appendChild(t);
+      setTimeout(() => { t.remove(); }, 2500);
+    }
+    refreshAuthUI();
   </script>
 </body>
 </html>

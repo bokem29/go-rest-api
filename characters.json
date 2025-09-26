@@ -6,18 +6,6 @@
     "game": "Super Mario"
   },
   {
-    "id": 4,
-    "name": "Atma",
-    "role": "Main Char",
-    "game": "A Space for The Unbound"
-  },
-  {
-    "id": 5,
-    "name": "Dante",
-    "role": "Demons",
-    "game": "Devil May Cry"
-  },
-  {
     "id": 6,
     "name": "Kratos",
     "role": "Main Char",
@@ -25,6 +13,12 @@
   },
   {
     "id": 7,
+    "name": "Nirmala",
+    "role": "Main Char",
+    "game": "A Space for The Unbound"
+  },
+  {
+    "id": 9,
     "name": "Sonic ",
     "role": "Speedster",
     "game": "Sonic The Hedhog"

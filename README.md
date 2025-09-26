@@ -10,6 +10,14 @@ Sebuah REST API sederhana yang dibangun dengan Go untuk mengelola data karakter 
 - **Auto-increment ID**: ID otomatis untuk karakter baru
 - **Static File Serving**: Melayani file statis untuk frontend
 - **Request Logging**: Log setiap request dengan timestamp
+// Fitur otentikasi & otorisasi
+- **JWT Authentication**: Login menghasilkan access token (JWT)
+- **Refresh Tokens**: Mendapatkan token baru tanpa login ulang
+- **Logout (Token Revocation)**: Mencabut token via blacklist JTI sampai masa berlaku habis
+- **Protected Routes**: Endpoint `/api/characters` diamankan dengan Bearer token
+- **Config via YAML**: User di-load dari `config.yaml`; rahasia JWT via env `JWT_SECRET`
+- **Cookie Fallback**: Server membaca token dari cookie `access_token` jika header Authorization tidak ada
+- **API Fallback 404**: Rute `/api/*` yang tidak dikenali mengembalikan 404 JSON, bukan HTML
 
 ## 📁 Struktur Proyek
 
@@ -18,13 +26,18 @@ go-rest/
 ├── main.go                 # Entry point aplikasi
 ├── go.mod                  # Go module file
 ├── characters.json         # Database file (JSON)
-├── index.html             # Frontend interface
+├── index.html              # Frontend interface
+├── config.yaml             # User accounts (demo/dev)
 ├── handlers/
-│   └── characterHandler.go # Handler untuk operasi karakter
+│   ├── characterHandler.go  # Handler untuk operasi karakter
+│   ├── authHandler.go       # Handler untuk login/refresh/logout
+│   └── apiFallback.go       # 404 JSON untuk rute /api/* yang tidak cocok
 ├── models/
-│   └── models.go          # Struktur data Character
+│   └── models.go           # Struktur data Character
 └── utils/
-    └── file.go            # Utility functions untuk file operations
+    ├── file.go             # Utility functions untuk file operations
+    ├── auth.go             # Utilitas JWT, refresh store, extractor
+    └── middleware.go       # Middleware: Secure, RequestLogger, Recover
 ```
 
 
@@ -37,13 +50,16 @@ http://localhost:8080
 
 ### Endpoints
 
-| Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| `GET` | `/api/characters` | Mendapatkan semua karakter |
-| `GET` | `/api/characters/{id}` | Mendapatkan karakter berdasarkan ID |
-| `POST` | `/api/characters` | Membuat karakter baru |
-| `PUT` | `/api/characters/{id}` | Mengupdate karakter berdasarkan ID |
-| `DELETE` | `/api/characters/{id}` | Menghapus karakter berdasarkan ID |
+| Method | Endpoint | Deskripsi | Auth |
+|--------|----------|-----------|------|
+| `POST` | `/api/login` | Login, menghasilkan access + refresh token | No |
+| `POST` | `/api/refresh` | Tukar refresh token untuk pasangan token baru | No |
+| `POST` | `/api/logout` | Mencabut access token saat ini (blacklist JTI) | Bearer |
+| `GET` | `/api/characters` | Mendapatkan semua karakter | Bearer |
+| `GET` | `/api/characters/{id}` | Mendapatkan karakter berdasarkan ID | Bearer |
+| `POST` | `/api/characters` | Membuat karakter baru | Bearer |
+| `PUT` | `/api/characters/{id}` | Mengupdate karakter berdasarkan ID | Bearer |
+| `DELETE` | `/api/characters/{id}` | Menghapus karakter berdasarkan ID | Bearer |
 
 ### Contoh Request/Response
 
@@ -126,6 +142,40 @@ DELETE /api/characters/2
 
 **Response:** `204 No Content`
 
+## 🔐 Otentikasi
+
+### Login
+```bash
+curl -X POST http://localhost:8080/api/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"admin123"}'
+```
+Response:
+```json
+{ "token": "<ACCESS_JWT>", "refresh": "<REFRESH_TOKEN>" }
+```
+
+Gunakan nilai `token` sebagai Bearer token pada header `Authorization`:
+```bash
+curl http://localhost:8080/api/characters \
+  -H "Authorization: Bearer <ACCESS_JWT>"
+```
+
+### Refresh Token
+```bash
+curl -X POST http://localhost:8080/api/refresh \
+  -H "Content-Type: application/json" \
+  -d '{"refresh":"<REFRESH_TOKEN>"}'
+```
+Response berisi pasangan token baru (access + refresh). Refresh lama otomatis diputar (rotated) dan tidak valid lagi.
+
+### Logout
+```bash
+curl -X POST http://localhost:8080/api/logout \
+  -H "Authorization: Bearer <ACCESS_JWT>"
+```
+Menggunakan blacklist berdasarkan `jti` pada JWT hingga masa berlaku habis.
+
 ## 🏗️ Arsitektur
 
 ### Models
@@ -148,8 +198,20 @@ type Character struct {
 - `LoadData()`: Memuat data dari file JSON
 - `SaveData()`: Menyimpan data ke file JSON
 - Global variables: `Characters` dan `LastID`
+- `Authenticate()`, `CreateToken()`, `Secure()`: Utilitas otentikasi JWT dan middleware
 
 ## 🔧 Pengembangan
+
+### Menjalankan Aplikasi
+1. (Opsional) Set rahasia JWT untuk produksi/deploy:
+   - Windows PowerShell: `setx JWT_SECRET "your-strong-secret"`
+   - Linux/macOS: `export JWT_SECRET="your-strong-secret"`
+2. Pastikan `config.yaml` berisi user untuk login (contoh tersedia).
+3. Jalankan server:
+```bash
+go run main.go
+```
+Server berjalan di `http://localhost:8080`.
 
 ### Menambahkan Fitur Baru
 1. Tambahkan handler baru di folder `handlers/`
@@ -192,6 +254,9 @@ curl -X DELETE http://localhost:8080/api/characters/2
 - Log request ditampilkan di console
 - File statis dilayani dari root directory
 - ID otomatis increment untuk karakter baru
+- User demo didefinisikan di `config.yaml`
+- Endpoint `/api/characters` memerlukan header `Authorization: Bearer <ACCESS_JWT>`
+- Set `JWT_SECRET` di environment untuk mengganti default dev-secret
 
 
 
