@@ -22,10 +22,9 @@
       font-family: 'Manrope', sans-serif;
       margin: 0;
       padding: 20px;
-      background: radial-gradient(1200px 600px at 20% -10%, rgba(99,102,241,0.12), transparent 50%),
-                  radial-gradient(1200px 600px at 80% -10%, rgba(56,189,248,0.12), transparent 50%),
-                  var(--bg);
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       color: var(--text);
+      min-height: 100vh;
     }
     h1 {
       text-align: center;
@@ -37,8 +36,30 @@
     .brand-badge { width:26px; height:26px; border-radius:8px; background: linear-gradient(135deg, var(--primary), #38bdf8); box-shadow: var(--shadow); }
     .btn-add { display: inline-block; padding: 10px 16px; background-color: var(--primary); color: white; border: 1px solid var(--primary); border-radius: 10px; font-family: "Manrope", sans-serif; cursor: pointer; transition: background 0.25s, transform 0.2s; }
     .btn-add:hover { background-color: var(--primary-600); transform: translateY(-1px); }
-    .btn-ghost { display:inline-block; padding: 10px 16px; border-radius: 10px; background: rgba(148,163,184,0.08); border: 1px solid rgba(148,163,184,0.18); color: var(--text); cursor: pointer; }
+    .btn-ghost { display:inline-block; padding: 10px 16px; border-radius: 10px; background: rgba(148,163,184,0.08); border: 1px solid rgba(148,163,184,0.18); color: var(--text); cursor: pointer; font-family: "Manrope", sans-serif; }
     .btn-ghost:hover { background: rgba(148,163,184,0.16); }
+    .button { padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(148,163,184,0.2); background: transparent; color: var(--text); cursor: pointer; font-family: "Manrope", sans-serif; }
+    .button.primary { background: var(--primary); border-color: var(--primary); }
+    .button.primary:hover { background: var(--primary-600); }
+    .button.ghost:hover { background: rgba(148,163,184,0.08);  }
+    .button.ghost { font-family: "Manrope", sans-serif; }
+    
+
+
+    .container { max-width: 1100px; margin: 28px auto; padding: 0 20px; }
+    .section { margin-top: 16px; }
+    .panel { background: rgba(17,24,39,0.8); border: 1px solid rgba(148,163,184,0.12); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .panel-inner { padding: 16px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .row { display: flex; gap: 8px; align-items: center; }
+    .row.right { justify-content: flex-end; }
+    .empty { text-align: center; padding: 40px 0; color: var(--muted); }
+    .tag { display: inline-block; padding: 4px 8px; border-radius: 999px; background: rgba(99,102,241,0.12); color: #c7d2fe; font-size: 12px; }
+    .btn { padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(148,163,184,0.18); background: rgba(148,163,184,0.08); color: var(--text); cursor: pointer; }
+    .btn:hover { background: rgba(148,163,184,0.16); }
+    .btn.warn { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.25); color: #fde68a; }
+    .btn.danger { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.25); color: #fecaca; }
+
     form {
       max-width: 600px;
       margin: 20px auto;
@@ -70,14 +91,6 @@
       margin-top: 10px;
     }
   
-    .card-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 16px;
-      padding: 20px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
     .card {
       background: rgba(17,24,39,0.8);
       border-radius: 12px;
@@ -85,7 +98,7 @@
       border: 1px solid rgba(148,163,184,0.12);
       width: 220px;
       padding: 20px;
-      text-align: center;
+      text-align: left;
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
     .card:hover {
@@ -101,7 +114,8 @@
     .card p {
       font-size: 0.95em;
       color: #cbd5e1;
-      margin: 5px 0;
+      margin: 8px 0;
+      line-height: 1.4;
     }
     .card button {
       margin: 5px 5px;
@@ -140,53 +154,154 @@
     .muted { color: var(--muted); }
     .spinner { width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.9s linear infinite; display: inline-block; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Modal */
+    .backdrop { 
+      position: fixed; 
+      inset: 0; 
+      background: rgba(0,0,0,0.5); 
+      display: none; 
+      align-items: center; 
+      justify-content: center; 
+      z-index: 50; 
+      backdrop-filter: blur(4px);
+    }
+    .modal { 
+      width: 500px; 
+      max-width: calc(100% - 32px); 
+      background: var(--card); 
+      border: 1px solid rgba(148,163,184,0.2); 
+      border-radius: 16px; 
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4); 
+      overflow: hidden; 
+      animation: modalSlideIn 0.2s ease-out;
+    }
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 20px 24px; 
+      border-bottom: 1px solid rgba(148,163,184,0.15); 
+    }
+    .modal-header h4 { 
+      margin: 0; 
+      font-size: 18px; 
+      font-weight: 600; 
+    }
+    .modal-body { 
+      padding: 24px; 
+    }
+    .field { 
+      margin-bottom: 16px; 
+    }
+    .field label { 
+      display: block; 
+      margin-bottom: 8px; 
+      color: var(--muted); 
+      font-size: 14px; 
+      font-weight: 500; 
+    }
+    .field input { 
+      width: 100%; 
+      padding: 12px 16px; 
+      border-radius: 10px; 
+      border: 1px solid rgba(148,163,184,0.25); 
+      background: rgba(148,163,184,0.06); 
+      color: var(--text); 
+      font-size: 15px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .field input:focus { 
+      outline: none; 
+      border-color: var(--primary); 
+      background: rgba(99,102,241,0.08); 
+    }
+    .modal-actions { 
+      display: flex; 
+      gap: 12px; 
+      justify-content: flex-end; 
+      margin-top: 24px; 
+    }
   </style>
 </head>
 <body>
   <div class="toolbar">
-    <div class="brand"><div class="brand-badge"></div> <div>Karakter Game</div></div>
+    <div class="brand"><div class="brand-badge"></div> 
+    <div>Karakter Game</div></div>
     <div>
-      <button class="btn-ghost" onclick="loadCharacters()">Refresh</button>
-      <button class="btn-add" onclick="document.querySelector('form').scrollIntoView({behavior:'smooth'});">+ Tambah</button>
+      <button class="btn-ghost" onclick="loadCharacters()">🔄 Refresh</button>
+      <button class="btn-add" onclick="openModal()">+ Tambah</button>
     </div>
   </div>
-  <h1>Karakter Game</h1>
-  <div style="max-width: 500px; margin: 0 auto;">
-    <div id="authBox" style="background:rgba(17,24,39,0.8); padding:16px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.05); margin-bottom:16px;">
-      <div id="loginForm">
-        <h3 style="margin:0 0 10px 0;">Login</h3>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button class="btn-add" onclick="login()">Login</button>
-      </div>
-      <div id="loggedIn" style="display:none;">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-          <div><strong>Status:</strong> <span id="statusText">Belum login</span></div>
-          <div>
-            <button class="btn-add" style="background:#1976d2" onclick="loadCharacters()">Lihat Semua Karakter</button>
-            <button class="btn-add" style="background:#9c27b0" onclick="logout()">Logout</button>
+
+  <div class="container">
+    <div id="authBox" class="panel section">
+      <div class="panel-inner">
+        <div id="loginForm">
+          <h3 style="margin:0 0 10px 0;">Login</h3>
+          <div class="row">
+            <input type="text" id="username" placeholder="Username" style="flex:1;">
+            <input type="password" id="password" placeholder="Password" style="flex:1;">
+            <button class="button primary" onclick="login()">Login</button>
+          </div>
+        </div>
+        <div id="loggedIn" style="display:none;">
+          <div class="row" style="justify-content: space-between;">
+            <div><strong>Status:</strong> <span id="statusText">Belum login</span></div>
+            <div class="row">
+              <button class="button ghost" onclick="loadCharacters()">Lihat Semua Karakter</button>
+              <button class="button" style="border-color: rgba(239,68,68,0.4); color:#fecaca; background: rgba(239,68,68,0.12);" onclick="logout()">Logout</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="panel section">
+      <div class="panel-inner">
+        <div id="listState" class="row" style="justify-content: space-between; margin-bottom: 10px;">
+          <div class="muted">Daftar Karakter</div>
+          <div id="loading" style="display:none" class="row muted"><span class="spinner"></span><span style="margin-left:8px;">Memuat...</span></div>
+        </div>
+        <div id="characterCards" class="grid"></div>
+        <div id="emptyState" class="empty" style="display:none;">Belum ada data. Klik <b>+ Tambah</b> untuk menambahkan.</div>
+      </div>
+    </div>
   </div>
 
-  <div id="characterCards" class="card-container"></div>
-  <div id="listLoading" style="text-align:center; margin: 10px 0; display:none;" class="muted"><span class="spinner"></span> Memuat...</div>
-  <div id="emptyState" style="text-align:center; margin: 10px 0; display:none;" class="muted">Belum ada data</div>
-
-  <h2 style="text-align:center; color: #fafafa;">Tambah / Edit Karakter</h2>
-  <form onsubmit="saveCharacter(event)">
-    <label>Nama:</label><br>
-    <input type="text" id="name" required><br>
-    <label>Role:</label><br>
-    <input type="text" id="role" required><br>
-    <label>Game:</label><br>
-    <input type="text" id="game" required><br>
-    <div id="formButtons">
-      <button type="submit" class="btn-add">Simpan</button>
+  <!-- Modal Tambah/Edit Karakter -->
+  <div id="modalBackdrop" class="backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h4 id="modalTitle">Tambah Karakter</h4>
+        <button class="btn-ghost" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="saveCharacter(event)">
+          <div class="field">
+            <label>Nama</label>
+            <input type="text" id="name" required>
+          </div>
+          <div class="field">
+            <label>Role</label>
+            <input type="text" id="role" required>
+          </div>
+          <div class="field">
+            <label>Game</label>
+            <input type="text" id="game" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-ghost" onclick="closeModal()">Batal</button>
+            <button type="submit" class="btn-add">Simpan</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </form>
+  </div>
 
   <script>
     let editId = null;
@@ -286,10 +401,10 @@
 
     async function loadCharacters() {
       if (!token) { alert('Silakan login dulu'); return; }
-      document.getElementById('listLoading').style.display = 'block';
+      document.getElementById('loading').style.display = 'flex';
       const res = await apiFetch("/api/characters");
       const data = await res.json();
-      document.getElementById('listLoading').style.display = 'none';
+      document.getElementById('loading').style.display = 'none';
 
       const container = document.getElementById("characterCards");
       container.innerHTML = "";
@@ -303,7 +418,7 @@
           <h3>${c.name}</h3>
           <p><strong>Role:</strong> ${c.role}</p>
           <p><strong>Game:</strong> ${c.game}</p>
-          <div>
+          <div style="margin-top: 15px; text-align: center;">
             <button class="btn-edit" onclick="editCharacter(${c.id}, '${c.name}', '${c.role}', '${c.game}')">Edit</button>
             <button class="btn-delete" onclick="deleteCharacter(${c.id})">Hapus</button>
           </div>
@@ -314,10 +429,11 @@
 
     function editCharacter(id, name, role, game) {
       editId = id;
+      document.getElementById('modalTitle').textContent = 'Edit Karakter';
       document.getElementById("name").value = name;
       document.getElementById("role").value = role;
       document.getElementById("game").value = game;
-      
+      openModal(true);
     }
 
 
@@ -348,8 +464,8 @@
     showToast('Karakter ditambahkan', 'success');
   }
 
-  document.querySelector("form").reset();
-
+  document.querySelector("#modalBackdrop form").reset();
+  closeModal();
   loadCharacters();
 }
 
@@ -377,6 +493,30 @@
       document.getElementById('toasts').appendChild(t);
       setTimeout(() => { t.remove(); }, 2500);
     }
+
+    function openModal(isEdit = false) {
+      if (!token) { alert('Silakan login dulu'); return; }
+      if (!isEdit) {
+        editId = null;
+        document.getElementById('modalTitle').textContent = 'Tambah Karakter';
+        document.querySelector("#modalBackdrop form").reset();
+      }
+      document.getElementById('modalBackdrop').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modalBackdrop').style.display = 'none';
+      editId = null;
+    }
+
+    // Close modal on backdrop click
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('modalBackdrop').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeModal();
+        }
+      });
+    });
     refreshAuthUI();
   </script>
 </body>

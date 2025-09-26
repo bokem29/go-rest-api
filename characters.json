@@ -13,7 +13,7 @@
   },
   {
     "id": 7,
-    "name": "Nirmala",
+    "name": "Nirmalas",
     "role": "Main Char",
     "game": "A Space for The Unbound"
   },
@@ -22,5 +22,29 @@
     "name": "Sonic ",
     "role": "Speedster",
     "game": "Sonic The Hedhog"
+  },
+  {
+    "id": 10,
+    "name": "Lara Croft",
+    "role": "Main Char",
+    "game": "Tomb Raider"
+  },
+  {
+    "id": 11,
+    "name": "Link",
+    "role": "Heroes",
+    "game": "The Legend of Zelda"
+  },
+  {
+    "id": 12,
+    "name": "Leon S. Kennedy",
+    "role": "Main Char",
+    "game": "RE 4"
+  },
+  {
+    "id": 13,
+    "name": "Arthur Morgan",
+    "role": "Main Char",
+    "game": "RDR"
   }
 ]
