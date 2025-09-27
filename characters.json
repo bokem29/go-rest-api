@@ -1,9 +1,9 @@
 [
   {
     "id": 2,
-    "name": "Mario",
-    "role": "Main Char",
-    "game": "Super Mario"
+    "name": "Yan",
+    "role": "Master",
+    "game": "Sugma"
   },
   {
     "id": 6,
@@ -46,5 +46,11 @@
     "name": "Arthur Morgan",
     "role": "Main Char",
     "game": "RDR"
+  },
+  {
+    "id": 14,
+    "name": "Naruto Uzumaki",
+    "role": "Ninja",
+    "game": "Naruto Ultimate"
   }
 ]

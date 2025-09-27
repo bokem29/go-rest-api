@@ -146,33 +146,46 @@ DELETE /api/characters/2
 
 ### Login
 ```bash
-curl -X POST http://localhost:8080/api/login \
-  -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"admin123"}'
+$resp = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/api/login" -ContentType "application/json" -Body (@{username="user";password="pass123"} | ConvertTo-Json)
+$env:API_TOKEN = $resp.token
+# Token khusus yang lebih panjang umurnya(Opsional)
+$env:REFRESH_TOKEN = $resp.refresh
 ```
-Response:
-```json
-{ "token": "<ACCESS_JWT>", "refresh": "<REFRESH_TOKEN>" }
-```
-
-Gunakan nilai `token` sebagai Bearer token pada header `Authorization`:
-```bash
-curl http://localhost:8080/api/characters \
-  -H "Authorization: Bearer <ACCESS_JWT>"
+Cek Token yang disimpan dalam env:
+```$env:API_TOKEN
 ```
 
-### Refresh Token
+Get characters:
 ```bash
-curl -X POST http://localhost:8080/api/refresh \
-  -H "Content-Type: application/json" \
-  -d '{"refresh":"<REFRESH_TOKEN>"}'
+Invoke-RestMethod -Method Get -Uri "http://localhost:8080/api/characters" `
+  -Headers @{ Authorization = "Bearer $env:API_TOKEN" }
 ```
-Response berisi pasangan token baru (access + refresh). Refresh lama otomatis diputar (rotated) dan tidak valid lagi.
+
+Add characters:
+```bash
+Invoke-RestMethod "http://localhost:8080/api/characters" `
+  -Method POST `
+  -Headers @{ "Content-Type" = "application/json"; Authorization = "Bearer $env:API_TOKEN" } `
+  -Body '{"name":"{new character name}","role":"{new role}","game":"{new game}"}'
+```
+
+Update characters:
+```bash
+Invoke-RestMethod -Method Put -Uri "http://localhost:8080/api/characters/1" `
+  -Headers @{ Authorization = "Bearer $env:API_TOKEN"; "Content-Type" = "application/json" } `
+  -Body '{"name":"{new name}","role":"{new role}","game":"{new game}"}'
+    
+```
+Delete characters:
+```bash
+Invoke-RestMethod -Method Delete -Uri "http://localhost:8080/api/characters/{id}" `       
+  -Headers @{ Authorization = "Bearer $env:API_TOKEN" }
+    
+```
 
 ### Logout
 ```bash
-curl -X POST http://localhost:8080/api/logout \
-  -H "Authorization: Bearer <ACCESS_JWT>"
+Invoke-RestMethod -Method Post -Uri "http://localhost:8080/api/logout" -Headers @{Authorization="Bearer $env:API_TOKEN"}
 ```
 Menggunakan blacklist berdasarkan `jti` pada JWT hingga masa berlaku habis.
 
