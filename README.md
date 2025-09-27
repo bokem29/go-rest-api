@@ -152,7 +152,8 @@ $env:API_TOKEN = $resp.token
 $env:REFRESH_TOKEN = $resp.refresh
 ```
 Cek Token yang disimpan dalam env:
-```$env:API_TOKEN
+```bash
+$env:API_TOKEN
 ```
 
 Get characters:
