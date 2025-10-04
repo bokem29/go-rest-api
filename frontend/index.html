@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..800&display=swap" rel="stylesheet">
+  <title>Karakter Game</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="toolbar">
+    <div class="brand"><div class="brand-badge"></div> 
+    <div>Karakter Game</div></div>
+    <div>
+      <button class="btn-ghost" onclick="loadCharacters()">🔄 Refresh</button>
+      <button class="btn-add" onclick="openModal()">+ Tambah</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="authBox" class="panel section">
+      <div class="panel-inner">
+        <div id="loginForm">
+          <h3 style="margin:0 0 10px 0;">Login</h3>
+          <div class="row">
+            <input type="text" id="username" placeholder="Username" style="flex:1;">
+            <input type="password" id="password" placeholder="Password" style="flex:1;">
+            <button class="button primary" onclick="login()">Login</button>
+          </div>
+        </div>
+        <div id="loggedIn" style="display:none;">
+          <div class="row" style="justify-content: space-between;">
+            <div><strong>Status:</strong> <span id="statusText">Belum login</span></div>
+            <div class="row">
+              <button class="button ghost" onclick="loadCharacters()">Lihat Semua Karakter</button>
+              <button class="button" style="border-color: rgba(239,68,68,0.4); color:#fecaca; background: rgba(239,68,68,0.12);" onclick="logout()">Logout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel section">
+      <div class="panel-inner">
+        <div id="listState" class="row" style="justify-content: space-between; margin-bottom: 10px;">
+          <div class="muted">Daftar Karakter</div>
+          <div id="loading" style="display:none" class="row muted"><span class="spinner"></span><span style="margin-left:8px;">Memuat...</span></div>
+        </div>
+        <div id="characterCards" class="grid"></div>
+        <div id="emptyState" class="empty" style="display:none;">Belum ada data. Klik <b>+ Tambah</b> untuk menambahkan.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah/Edit Karakter -->
+  <div id="modalBackdrop" class="backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h4 id="modalTitle">Tambah Karakter</h4>
+        <button class="btn-ghost" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="saveCharacter(event)">
+          <div class="field">
+            <label>Nama</label>
+            <input type="text" id="name" required>
+          </div>
+          <div class="field">
+            <label>Role</label>
+            <input type="text" id="role" required>
+          </div>
+          <div class="field">
+            <label>Game</label>
+            <input type="text" id="game" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-ghost" onclick="closeModal()">Batal</button>
+            <button type="submit" class="btn-add">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/main.js">
+  </script>
+</body>
+</html>

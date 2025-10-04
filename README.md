@@ -1,11 +1,13 @@
 # Go REST API - Character Management
 
-Sebuah REST API sederhana yang dibangun dengan Go untuk mengelola data karakter game. API ini menyediakan operasi CRUD (Create, Read, Update, Delete) untuk karakter game dengan penyimpanan data berbasis file JSON.
+Sebuah REST API sederhana yang dibangun dengan Go untuk mengelola data karakter game. API ini menyediakan operasi CRUD (Create, Read, Update, Delete) untuk karakter game dengan penyimpanan data berbasis PostgreSQL.
+
+API ini juga dilengkapi dengan Swagger API Documentation sehingga memudahkan pengembang untuk memahami dan menguji endpoint.
 
 ## 🚀 Fitur
 
 - **CRUD Operations**: Create, Read, Update, Delete karakter game
-- **JSON Storage**: Data disimpan dalam file JSON (`characters.json`)
+- **Database Storage**: Data disimpan dalam database PostgreSQL (karakter_game)
 - **RESTful API**: Endpoint yang mengikuti standar REST
 - **Auto-increment ID**: ID otomatis untuk karakter baru
 - **Static File Serving**: Melayani file statis untuk frontend
@@ -26,18 +28,29 @@ go-rest/
 ├── main.go                 # Entry point aplikasi
 ├── go.mod                  # Go module file
 ├── characters.json         # Database file (JSON)
-├── index.html              # Frontend interface
 ├── config.yaml             # User accounts (demo/dev)
+├── config/
+│   ├── db.go               # Koneksi ke PostgreSQL
+│   └── migration.go        # Script migrasi database
+├── docs/
+│   ├── docs.go             # Konfigurasi metadata dokumentasi Swagger ke aplikasi Go
+│   ├── swagger.json        # Dokumentasi API (format JSON)
+│   └── swagger.yaml        # Dokumentasi API (format YAML)
 ├── handlers/
-│   ├── characterHandler.go  # Handler untuk operasi karakter
-│   ├── authHandler.go       # Handler untuk login/refresh/logout
-│   └── apiFallback.go       # 404 JSON untuk rute /api/* yang tidak cocok
+│   ├── characterHandler.go # Handler untuk operasi karakter
+│   ├── authHandler.go      # Handler untuk login/refresh/logout
+│   └── apiFallback.go      # 404 JSON untuk rute /api/* yang tidak cocok
 ├── models/
 │   └── models.go           # Struktur data Character
-└── utils/
-    ├── file.go             # Utility functions untuk file operations
-    ├── auth.go             # Utilitas JWT, refresh store, extractor
-    └── middleware.go       # Middleware: Secure, RequestLogger, Recover
+├── utils/
+│   ├── file.go             # Utility functions untuk file operations
+│   ├── auth.go             # Utilitas JWT, refresh store, extractor
+│   └── middleware.go       # Middleware: Secure, RequestLogger, Recover
+├── frontend/
+│   ├── index.html          # Halaman utama frontend
+│   ├── style.css           # File CSS
+│   └── main.js             # File JavaScript
+
 ```
 
 
@@ -60,6 +73,28 @@ http://localhost:8080
 | `POST` | `/api/characters` | Membuat karakter baru | Bearer |
 | `PUT` | `/api/characters/{id}` | Mengupdate karakter berdasarkan ID | Bearer |
 | `DELETE` | `/api/characters/{id}` | Menghapus karakter berdasarkan ID | Bearer |
+
+## 📜 Swagger API Documentation
+
+API documentation otomatis tersedia menggunakan Swagger.
+Setelah menjalankan server, akses dokumentasi di:
+
+```bash
+http://localhost:8080/docs/index.html
+```
+
+Swagger docs memuat:
+
+- Daftar semua endpoint API
+
+- Deskripsi endpoint
+
+- Parameter request
+
+- Response model
+
+- Contoh request dan response
+
 
 ### Contoh Request/Response
 
@@ -263,15 +298,13 @@ curl -X DELETE http://localhost:8080/api/characters/2
 
 ## 📝 Catatan
 
-- Data disimpan dalam file `characters.json`
-- Server berjalan di port `8080`
-- Log request ditampilkan di console
-- File statis dilayani dari root directory
-- ID otomatis increment untuk karakter baru
-- User demo didefinisikan di `config.yaml`
-- Endpoint `/api/characters` memerlukan header `Authorization: Bearer <ACCESS_JWT>`
-- Set `JWT_SECRET` di environment untuk mengganti default dev-secret
+- Data disimpan di PostgreSQL (karakter_game database, characters table)
 
+- Pastikan koneksi ke database dikonfigurasi di config/db.go
+
+- Dokumentasi API tersedia di /docs/index.html via Swagger
+
+- Endpoint /api/characters memerlukan header Authorization: Bearer <ACCESS_JWT>
 
 
 ## 👨‍💻 Author

@@ -17,7 +17,16 @@ type tokenResponse struct {
 	Refresh string `json:"refresh"`
 }
 
-// LoginHandler handles /api/login
+// @Summary      Login
+// @Description  Login menggunakan username & password, menghasilkan access token + refresh token
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        credentials  body      loginRequest   true  "Username dan Password"
+// @Success      200          {object}  tokenResponse
+// @Failure      400          {object}  map[string]string
+// @Failure      401          {object}  map[string]string
+// @Router       /login [post]
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -49,7 +58,14 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(tokenResponse{Token: Token, Refresh: refresh})
 }
 
-// LogoutHandler handles /api/logout, invalidates token
+// @Summary      Logout
+// @Description  Logout user, menghapus access token & refresh token (client-side dan cookie akan dihapus)
+// @Tags         auth
+// @Produce      json
+// @Success      204  "No Content"
+// @Failure      401  {object}  map[string]string
+// @Router       /logout [post]
+// @Security     BearerAuth
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -67,7 +83,14 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-// RefreshHandler rotates refresh token and returns new access + refresh token
+// @Summary      Logout
+// @Description  Logout user, menghapus access token & refresh token (client-side dan cookie akan dihapus)
+// @Tags         auth
+// @Produce      json
+// @Success      204  "No Content"
+// @Failure      401  {object}  map[string]string
+// @Router       /logout [post]
+// @Security     BearerAuth
 func RefreshHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
